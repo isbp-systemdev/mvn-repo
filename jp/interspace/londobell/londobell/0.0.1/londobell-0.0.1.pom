@@ -1,0 +1,103 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>jp.interspace.londobell</groupId>
+	<artifactId>londobell</artifactId>
+
+	<version>0.0.1</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>11</java.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		
+		<commons-lang3.version>3.7</commons-lang3.version>
+		<commons-collections4.version>4.2</commons-collections4.version>
+		<slf4j-api.version>1.7.25</slf4j-api.version>
+		<lombok.version>1.16.22</lombok.version>
+		
+		<github.origin.global.server>isbp-github</github.origin.global.server>
+		<git.origin.branch.name>release</git.origin.branch.name>
+		<git.origin.repo.owner>isbp-systemdev</git.origin.repo.owner>
+		<git.origin.repo.name>mvn-repo</git.origin.repo.name>
+		<git.origin.merge>true</git.origin.merge>
+		
+		<github.global.server>${github.origin.global.server}</github.global.server>
+		<git.branch.name>${git.origin.branch.name}</git.branch.name>
+		<git.repo.owner>${git.origin.repo.owner}</git.repo.owner>
+		<git.repo.name>${git.origin.repo.name}</git.repo.name>
+		<git.merge>${git.origin.merge}</git.merge>
+	</properties>
+
+	<modules>
+		<module>isbp-sendgridmail</module>
+		<module>isbp-slack-notification</module>
+	</modules>
+
+	<distributionManagement>
+		<repository>
+			<id>internal.repos</id>
+			<name>Temporary Staging Repository</name>
+			<url>file://${project.build.directory}/${git.branch.name}</url>
+		</repository>
+	</distributionManagement>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>${commons-collections4.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j-api.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.12</version>
+				<configuration>
+					<message>Maven artifacts for ${project.artifactId} ${project.version}</message>
+					<noJekyll>true</noJekyll>
+					<outputDirectory>${project.build.directory}/${git.branch.name}</outputDirectory>
+					<branch>refs/heads/${git.branch.name}</branch>
+					<includes>
+						<include>**/*</include>
+					</includes>
+					<repositoryName>${git.repo.name}</repositoryName>
+					<repositoryOwner>${git.repo.owner}</repositoryOwner>
+					<merge>${git.merge}</merge>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>deploy</phase>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
