@@ -30,6 +30,7 @@
 	<modules>
 		<module>isbp-sendgridmail</module>
 		<module>isbp-slack-notification</module>
+		<module>isbp-custom-dialect</module>
 	</modules>
 
 	<distributionManagement>
