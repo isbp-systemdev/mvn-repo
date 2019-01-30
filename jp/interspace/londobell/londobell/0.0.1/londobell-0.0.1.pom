@@ -35,6 +35,7 @@
 		<module>isbp-slack-notification</module>
 		<module>isbp-custom-dialect</module>
 		<module>isbp-validation</module>
+		<module>isbp-gcp-storage</module>
 	</modules>
 
 	<distributionManagement>
